@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--
+    CREATE TABLE `USER_PROFILE_FILE` (
+        `FILE_ID`	BIGINT	NOT NULL,
+        `Key`	VARCHAR(255)	NOT NULL,
+        `USR_ID`	BIGINT	NOT NULL,
+        `FILE_PATH`	VARCHAR(100) NOT	NULL,
+        `FILE_NM`	VARCHAR(100) NOT	NULL,
+        `REG_DT`	DATETIME	NOT NULL DEFAULT NOW()
+
+    );
+
+    ALTER TABLE `USER_PROFILE_FILE` ADD CONSTRAINT `FK_USER_TO_USER_PROFILE_FILE_1` FOREIGN KEY (
+        `USR_ID`
+    )
+    REFERENCES `USER` (
+        `USR_ID`
+    );
+
+-->
+
+<mapper namespace="com.spring.sunyeop2.login.mapper.UserMapper">
+
+    <insert id="updateProfileImg" parameterType="Map">
+        INSERT INTO USER_PROFILE_FILE (
+                                      USR_ID
+                                    , FILE_PATH
+                                    , FILE_NM
+                                    , REG_DT
+        ) VALUES (
+                   #{usrId}
+                 , #{filePath}
+                 , #{fileNm}
+                 , NOW()
+                 ) ON DUPLICATE KEY UPDATE
+            FILE_PATH = #{filePath}
+            , FILE_NM = #{fileNm}
+            , REG_DT = NOW()
+    </insert>
+
+    <update id="updateUsrAs" parameterType="Map">
+        UPDATE USER
+        SET USR_AS = #{usrAs}
+        WHERE  USR_ID=#{usrId};
+    </update>
+
+
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--
+    CREATE TABLE `USER_STOCK` (
+        `USR_ID`	BIGINT	NOT NULL,
+        `STRN_CD`	INT(10) NOT	NULL,
+        `USR_STRN_CNT`	BIGINT NOT	NULL,
+        `RGT_DT`	DATETIME NOT NULL DEFAULT NOW()
+    );
+
+-->
+
+<mapper namespace="com.spring.sunyeop2.myPage.mapper.UserStockMapper">
+
+
+    <select id="myStockList" resultType="UserStock" parameterType="long">
+        SELECT * FROM USER_STOCK
+                 WHERE USR_ID = #{usrId}
+                 ORDER BY REG_DT DESC ;
+    </select>
+
+    <insert id="saveMystock" parameterType="UserStock">
+        INSERT INTO USER_STOCK(
+                                USR_ID,
+                                SRTN_CD
+                               ,USR_SRTN_CNT)
+        VALUES (
+                #{usrId},
+                #{srtnCd},
+                #{usrSrtnCnt});
+    </insert>
+    
+    <update id="changeMystock" parameterType="Userstock">
+        UPDATE USER_STOCK SET
+                              USR_SRTN_CNT = #{usrSrtnCnt},
+                              REG_DT = NOW()
+                          WHERE
+                              SRTN_CD = #{srtnCd} AND USR_ID = #{usrId};
+    </update>
+
+    <delete id="deleteMystock" parameterType="Map">
+        DELETE FROM USER_STOCK
+               WHERE
+                   USR_ID = #{usrId} AND SRTN_CD = #{srtnCd};
+    </delete>
+
+    <select id="stockHoldingRate" resultType="String" parameterType="String">
+
+    WITH A(TOTAL_USR) AS
+    (SELECT COUNT(DISTINCT(USR_ID)) AS TOTAL_USR FROM user_stock)
+
+    SELECT (COUNT(DISTINCT(USR_ID))) / (SELECT * FROM A) * 100 AS holdRate FROM USER_STOCK WHERE SRTN_CD = #{srtnCd};
+    </select>
+
+
+</mapper>

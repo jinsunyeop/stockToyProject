@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--
+        CREATE TABLE `USR` (
+        `USR_ID`	BIGINT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `LGN_ID`	VARCHAR(100)	NOT NULL,
+        `LGN_PWD`	VARCHAR(255)	NOT NULL,
+        `USR_NM`	VARCHAR(100)	NOT NULL,
+        `USR_AS`	VARCHAR(100)	NOT NULL,
+        `EML_ADDR`	VARCHAR(200)	NOT NULL,
+        `LGN_FAIL_CNT`	INT(10)	NOT NULL DEFAULT 0,
+        `JOIN_DT`	DATETIME	NOT NULL DEFAULT NOW(),
+        `ROLE_CD`	VARCHAR(20)	NOT NULL DEFAULT '01'
+        );
+-->
+
+<mapper namespace="com.spring.sunyeop2.login.mapper.LoginMapper">
+
+
+    <select id="findLoginUsr" resultType="User" parameterType="String">
+        SELECT
+            USR.USR_ID,
+            USR.LGN_ID,
+            USR.LGN_PWD,
+            USR.USR_NM,
+            USR.USR_AS,
+            USR.EML_ADDR,
+            USR.LGN_FAIL_CNT,
+            USR.JOIN_DT,
+            USR.ROLE_CD,
+            USR_FILE.FILE_PATH,
+            USR_FILE.FILE_NM,
+            USR_FILE.REG_DT
+        FROM user USR
+                 LEFT JOIN user_profile_file USR_FILE
+                           ON USR.USR_ID = USR_FILE.USR_ID
+        WHERE USR.LGN_ID = #{lgnId};
+    </select>
+
+
+    <select id="duplicateIdCheck" resultType="Integer" parameterType="User">
+        SELECT COUNT(*) FROM USER WHERE LGN_ID = #{lgnId};
+    </select>
+
+    <insert id="joinUsr" parameterType="User">
+        INSERT INTO USER (
+                          `LGN_ID`,
+                          `LGN_PWD`,
+                          `USR_NM`,
+                          `EML_ADDR`
+                          )
+        VALUES (
+                #{lgnId},
+                #{lgnPwd},
+                #{usrNm},
+                #{emlAddr}
+                );
+    </insert>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

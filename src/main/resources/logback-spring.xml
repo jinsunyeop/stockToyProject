@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+    * Appendar
+        1. ConsoleAppender : 로그를 콘솔에 출력
+        2. FileAppender : 로그를 지정 파일에 기록
+        3. RollingFileAppender : FileAppender을 상속. 날짜와 용량 등을 설정해서 패턴에 따라 로그가 각기 다른파일에 기록되게 할 수 있다.
+    -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logback 은 5단계의 로그 레벨을 가진다.
+        심각도 수준은 off > Error > Warn > Info > Debug > Trace 이다.
+    -->
+    <logger name="com.spring.sunyeop2" level="Debug"/>
+    <root level="Info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
+
+
+
+
+<!--
+
+Spring Boot 2.x에서는 Java Util Logging, Log4j 2, Logback 을 기본적으로 사용할 수 있다.
+
+Lombok을 의존성 주입을 하여 @Slf4j 어노테이션을 적용하면 log.debug()만으로 쉽게 로그를 확인할 수 있다.
+
+ * logback.xml vs logback-spring.xml
+
+    1. logback.xml : Spring이 구동되기 이전이라 application.properties 내에 값들을 불러올 수 없음
+    2. logback-spring.xml : Spring이 구동된 후라 application.properties 내에 값들을 불러올 수 있음
+
+ * Log level
+
+    TRACE < DEBUG < INFO < WARN < ERROR
+
+ * logging pattern
+
+    %-5level : 로그 레벨, -5는 출력의 고정폭 값(5글자) (INFO, ERROR, DEBUG , 기타 등등이다.)
+
+    %d{날짜 형식 포맷} : 로그 기록시간 %d{yyyy-MM-dd HH:mm:ss} 을 사용하면 된다.
+
+    %thread : 현재 Thread 명
+
+    %F : 로깅을 발생시킨 파일 명
+
+    %M : 로깅을 발생시킨 메소드 명
+
+    %logger{length} : Logger name을 축약할 수 있다. length는 최대 자릿수이다 (0 = 무제한)
+
+    %line : 로깅이 발생된 라인 넘버%msg : - 로그 메시지
+
+    %n : 줄바꿈(new line)
+
+
+-->
