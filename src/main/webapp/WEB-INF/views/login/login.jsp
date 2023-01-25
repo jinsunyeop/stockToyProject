@@ -26,15 +26,12 @@
                     <label for="lgnPwd">Password</label>
                 </div>
                 <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
-                    </label>
                 </div>
                 <a class="w-100 btn btn-lg btn-secondary" onclick="login();">Sign up</a>
                 <hr class="my-4">
                 <div>
-                    <a onclick="">아이디/비밀번호 찾기</a>
-                    <a href="<c:url value="/join" />" style="display: block; float: right;">회원가입</a>
+                    <a href="#" onclick="" style="color:black;">아이디/비밀번호 찾기</a>
+                    <a href="<c:url value="/join" />" style="display: block; color:black; float: right;">회원가입</a>
                 </div>
             </form>
     </div>

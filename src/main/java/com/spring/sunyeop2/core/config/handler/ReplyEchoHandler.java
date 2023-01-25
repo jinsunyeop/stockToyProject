@@ -71,9 +71,8 @@ public class ReplyEchoHandler extends TextWebSocketHandler {
         String sessionKey = session.getUri().toString();
         List<Map<String,WebSocketSession>>  sameUriSessions = allsessions.stream().filter(k->k.containsKey(sessionKey)).collect(Collectors.toList());
         for(Map<String,WebSocketSession> ss : sameUriSessions){
-        	if(!ss.get(sessionKey).equals(session)) {
         		ss.get(sessionKey).sendMessage(new TextMessage(msg));
-            }
+            
         }
 
     }
