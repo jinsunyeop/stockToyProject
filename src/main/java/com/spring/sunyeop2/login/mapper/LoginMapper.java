@@ -16,5 +16,9 @@ public interface LoginMapper {
 
     public Integer duplicateIdCheck(User user);
 
+    public String duplicateEmailCheck(User user);
+
+    public String findLgnPwd(User user);
+
     public void joinUsr(User user);
 }

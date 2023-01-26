@@ -30,7 +30,7 @@
                 <a class="w-100 btn btn-lg btn-secondary" onclick="login();">Sign up</a>
                 <hr class="my-4">
                 <div>
-                    <a href="#" onclick="" style="color:black;">아이디/비밀번호 찾기</a>
+                    <a href="#" onclick="" style="color:black;" data-bs-toggle="modal" data-bs-target="#findIdPwdModal">아이디/비밀번호 찾기</a>
                     <a href="<c:url value="/join" />" style="display: block; color:black; float: right;">회원가입</a>
                 </div>
             </form>
@@ -86,6 +86,116 @@
     }
 
 </script>
+
+
+<div class="modal fade" id="findIdPwdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fw-bolder" id="staticBackdropLabel">아이디 / 비밀번호 찾기</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <div class="modal-body">
+                <h4 class="fw-bolder">아이디 찾기</h4>
+                <hr>
+                <p class="fw-bolder"style="margin-bottom: 5px;">이메일 주소</p>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <input type="text" id="emailForId" class="form-control" placeholder="이메일을 입력하세요." aria-label="Input group example" aria-describedby="basic-addon1">
+                </div>
+
+                <div style="height: 25px;"></div>
+                <button type="button" class="btn btn-primary" onclick="findId();" style="display: block; margin: 0 auto;">아이디 찾기</button>
+
+                <br><br><hr>
+
+                <h4 class="fw-bolder">비밀번호 찾기</h4>
+                <hr>
+                <p class="fw-bolder"style="margin-bottom: 5px;">아이디</p>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <input type="text" id="idForPwd" class="form-control"  placeholder="아이디를 입력하세요." aria-label="Input group example" aria-describedby="basic-addon1">
+                </div>
+
+                <p class="fw-bolder"style="margin-bottom: 5px;">이메일 주소</p>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <input type="text" id="emailForPwd" class="form-control" placeholder="이메일을 입력하세요." aria-label="Input group example" aria-describedby="basic-addon1">
+                </div>
+
+                <div style="height: 25px;"></div>
+                <button type="button" class="btn btn-primary" onclick="findPwd();" style="display: block; margin: 0 auto;">비밀번호 찾기</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function findId(){
+            var $emlAddr =  $("#emailForId");
+
+            if(!$emlAddr.val().trim()){
+                alert("이메일을 입력하시기 바랍니다.");
+                $emlAddr.focus();
+                return false ;
+            }
+
+            $.ajax ({
+                url	: CONTEXT_PATH + "/findId",
+                method	: "GET",
+                data : {
+                    emlAddr : $emlAddr.val().trim()
+                },
+                async : true,
+                processData : true,
+                dataType    : "text",
+                success : function(msg) {
+                    alert(msg);
+                },
+                error	: function(xhr, status, error) {
+                }
+            });
+        }
+
+        function findPwd(){
+            var $lgnId =  $("#idForPwd");
+            var $emlAddr =  $("#emailForPwd");
+
+            if(!$lgnId.val().trim()){
+                alert("아이디를 입력하시기 바랍니다.");
+                $lgnId.focus();
+                return false ;
+            }
+
+            if(!$emlAddr.val().trim()){
+                alert("이메일을 입력하시기 바랍니다.");
+                $emlAddr.focus();
+                return false ;
+            }
+
+            $.ajax ({
+                url	: CONTEXT_PATH + "/findPwd",
+                method	: "GET",
+                data : {
+                    lgnId : $lgnId.val().trim(),
+                    emlAddr : $emlAddr.val().trim()
+                },
+                async : true,
+                processData : true,
+                dataType    : "text",
+                success : function(msg) {
+                    alert(msg);
+                },
+                error	: function(xhr, status, error) {
+                }
+            });
+        }
+
+
+
+    </script>
+
+</div>
 
 
 

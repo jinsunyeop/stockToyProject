@@ -1,8 +1,8 @@
 package com.spring.sunyeop2.core.config;
 
 
-import com.spring.sunyeop2.core.config.auth.UserLoginFailureHandler;
-import com.spring.sunyeop2.core.config.auth.UserLoginSuccessHandler;
+import com.spring.sunyeop2.core.config.handler.auth.UserLoginFailureHandler;
+import com.spring.sunyeop2.core.config.handler.auth.UserLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,7 +1,7 @@
 package com.spring.sunyeop2.myPage.controller;
 
 
-import com.spring.sunyeop2.core.config.auth.PrincipalDetails;
+import com.spring.sunyeop2.core.config.handler.auth.PrincipalDetails;
 import com.spring.sunyeop2.core.jsoup.NaverRank;
 import com.spring.sunyeop2.core.response.Message;
 import com.spring.sunyeop2.core.stockApi.StockApiService;
@@ -22,12 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller

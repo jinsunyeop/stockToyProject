@@ -1,4 +1,4 @@
-package com.spring.sunyeop2.core.config.auth;
+package com.spring.sunyeop2.core.config.handler.auth;
 
 
 /*

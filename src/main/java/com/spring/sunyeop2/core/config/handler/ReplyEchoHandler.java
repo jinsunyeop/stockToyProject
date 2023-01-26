@@ -1,15 +1,7 @@
 package com.spring.sunyeop2.core.config.handler;
 
 
-import com.spring.sunyeop2.core.config.auth.PrincipalDetails;
-import com.spring.sunyeop2.login.info.User;
-import com.spring.sunyeop2.login.mapper.LoginMapper;
-import com.spring.sunyeop2.login.service.LoginService;
-import com.spring.sunyeop2.login.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;

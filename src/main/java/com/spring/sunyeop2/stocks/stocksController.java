@@ -1,7 +1,7 @@
 package com.spring.sunyeop2.stocks;
 
 
-import com.spring.sunyeop2.core.config.auth.PrincipalDetails;
+import com.spring.sunyeop2.core.config.handler.auth.PrincipalDetails;
 import com.spring.sunyeop2.core.response.Message;
 import com.spring.sunyeop2.core.stockApi.StockApiService;
 import com.spring.sunyeop2.core.stockApi.StockResponseInfo;

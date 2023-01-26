@@ -42,6 +42,14 @@
         SELECT COUNT(*) FROM USER WHERE LGN_ID = #{lgnId};
     </select>
 
+    <select id="duplicateEmailCheck" resultType="String" parameterType="User">
+        SELECT LGN_ID FROM USER WHERE EML_ADDR = #{emlAddr};
+    </select>
+
+    <select id="findLgnPwd" resultType="String" parameterType="User">
+        SELECT LGN_PWD FROM USER WHERE LGN_ID = #{lgnId} AND EML_ADDR = #{emlAddr};
+    </select>
+
     <insert id="joinUsr" parameterType="User">
         INSERT INTO USER (
                           `LGN_ID`,

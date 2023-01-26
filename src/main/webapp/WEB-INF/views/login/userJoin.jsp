@@ -131,12 +131,18 @@
             emlAddr : $emlAddr.val().trim()
         }, function(result) { // $.ajsx(success: function() {}, fail(alert(msg))
             console.log(result);
-            alert(result.message);
             if(!(result.status == "OK")){
-                if(result.code = 0){
+                if(result.code == 1){
                     $('#lgnIdValid').removeClass("text-muted").addClass("text-danger");
+                    alert("이미 중복된 아이디입니다.");
+                }else if(result.code == 2){
+                    $('#emlAddrValid').removeClass("text-muted").addClass("text-danger");
+                    alert("이미 중복된 이메일입니다.");
+                }else{
+                    alert(result.message);
                 }
             }else{
+                alert(result.message);
                 location.href = CONTEXT_PATH + '/login';
             }
 

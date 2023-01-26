@@ -1,4 +1,4 @@
-package com.spring.sunyeop2.core.config.auth;
+package com.spring.sunyeop2.core.config.handler.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;

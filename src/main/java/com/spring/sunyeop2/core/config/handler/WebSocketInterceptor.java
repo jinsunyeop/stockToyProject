@@ -1,8 +1,6 @@
 package com.spring.sunyeop2.core.config.handler;
 
-import com.spring.sunyeop2.core.config.auth.PrincipalDetails;
-import com.spring.sunyeop2.login.info.User;
-import org.springframework.context.annotation.Configuration;
+import com.spring.sunyeop2.core.config.handler.auth.PrincipalDetails;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
