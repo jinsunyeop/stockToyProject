@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/login/**").permitAll()
+                .antMatchers("/freeBoard").authenticated()
                 .antMatchers("/main/**").authenticated()
                 .antMatchers("/admin/**").access("hasRole('admin')")
                 .anyRequest().permitAll() //denyAll()을 하려했지만 common 폴더에 있는 header/footer와 같이 공통적 css,script가 막혀서 안함.

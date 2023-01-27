@@ -23,6 +23,9 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/assets/dataTables/datatables.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/assets/dataTables/custom_datatables.css" />" />
 
+<!--ckEditor4 폴더 -->
+<script type="text/javascript" src="<c:url value="/assets/ckeditor/ckeditor.js"/>"></script>
+
 <script type="text/javascript">
 var CONTEXT_PATH = "<c:out value='${pageContext.request.contextPath}'/>";
 
