@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--
+        CREATE TABLE `USER_BOARD` (
+        `BOARD_NO`	BIGINT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `USR_ID`	BIGINT	NOT NULL,
+        `BOARD_TITLE`	VARCHAR(200)	NULL,
+        `BOARD_CONTENT`	VARCHAR(1000)	NULL,
+        `READ_CNT`	BIGINT	NULL DEFAULT 0,
+        `REG_DT`	DATETIME	NULL DEFAULT NOW()
+        );
+-->
+
+<mapper namespace="com.spring.sunyeop2.userBoard.mapper.UserBoardMapper">
+
+<sql id="columns_UserBoardInfo">
+    A.BOARD_NO,
+    A.USR_ID,
+    A.BOARD_TITLE,
+    A.BOARD_CONTENT,
+    A.READ_CNT,
+    A.REG_DT
+</sql>
+
+<sql id="orderBy_UserBoard">
+    <choose>
+        <when test="sortName == 'readCnt' "><bind name="orderBy"  value=" 'READ_CNT DESC' "/></when>
+        <when test="sortName == 'regDt' "><bind name="orderBy"  value=" 'REG_DT DESC' "/></when>
+        <otherwise><bind name="orderBy"  value=" 'BOARD_NO ASC' "/></otherwise>
+    </choose>
+</sql>
+
+
+<select id="userBoardtotalRecordSize" resultType="Integer" parameterType="Map">
+    SELECT COUNT(*) FROM USER_BOARD
+    <where>
+        <if test="BOARD_TITLE != null and BOARD_TITLE.length() > 0">
+            AND BOARD_TITLE LIKE CONCAT('%',#{BOARD_TITLE},'%')
+        </if>
+    </where>
+
+</select>
+
+<select id="userBoardListPaging" resultType="Board" parameterType="Map">
+    SELECT
+        <include refid="columns_UserBoardInfo"/>
+    FROM USER_BOARD A
+    <where>
+        <if test="BOARD_TITLE != null and BOARD_TITLE.length() > 0">
+            AND BOARD_TITLE LIKE CONCAT('%',#{BOARD_TITLE},'%')
+        </if>
+    </where>
+    <include refid="orderBy_UserBoard"/>
+    ORDER BY ${orderBy}
+    LIMIT #{startIndex} , #{recordSize}
+</select>
+
+
+<insert id="writeBoard" parameterType="Board" useGeneratedKeys="true"  keyProperty="boardNo">
+    INSERT INTO USER_BOARD
+        (`USR_ID`,
+         `BOARD_TITLE`,
+         `BOARD_CONTENT`)
+    VALUES
+        (#{usrId},
+         #{boardTitle},
+         #{boardContent});
+</insert>
+
+<update id="updateBoard" parameterType="Board">
+    UPDATE USER_BOARD
+    SET
+        BOARD_TITLE = #{boardTitle},
+        BOARD_CONTENT = #{boardContent},
+        REG_DT = NOW()
+    WHERE
+        BOARD_NO = #{boardNo}
+
+</update>
+
+<select id="readBoard" parameterType="long" resultType="Board">
+        SELECT
+            <include refid="columns_UserBoardInfo"/>,
+            B.USR_NM
+        FROM USER_BOARD A
+        LEFT JOIN  USER B
+        ON A.USR_ID = B.USR_ID
+        WHERE BOARD_NO = #{boardNo};
+</select>
+
+<update id="updateReadCnt" parameterType="long">
+        UPDATE USER_BOARD SET `READ_CNT`= `READ_CNT` + 1 WHERE  `BOARD_NO` = #{boardNo};
+</update>
+
+
+</mapper>

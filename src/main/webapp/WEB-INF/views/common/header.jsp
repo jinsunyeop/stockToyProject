@@ -16,7 +16,10 @@
           <a class="nav-link" id="headerMyPage" href="<c:url value="/main/mypage/myStockList" />">MyPage</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="headerStocks" href="#">Stocks</a>
+          <a class="nav-link" id="headerStocks" href="<c:url value="/main/stocks/allStock" />">Stocks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="headerBoard" href="<c:url value="/userBoard/list" />">UserBoard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="headerLogout" href="<c:url value="/logout"/>">LogOut</a>

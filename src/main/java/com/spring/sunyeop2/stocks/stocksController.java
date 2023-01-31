@@ -41,6 +41,7 @@ public class stocksController {
     @Autowired
     UserStockService stockService;
 
+
     private Double fltRtConverter(String fltRt) {
         int dotIdx = fltRt.indexOf(".");
         if(dotIdx > 0){

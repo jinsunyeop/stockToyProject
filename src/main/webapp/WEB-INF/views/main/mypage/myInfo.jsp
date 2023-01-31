@@ -36,6 +36,12 @@
                 Stocks
             </a>
         </li>
+        <li>
+            <a href="<c:url value="/userBoard/list" />" class="nav-link text-white" id="sideUserBoard">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
+                UserBoard
+            </a>
+        </li>
     </ul>
     <hr>
     <div class="">

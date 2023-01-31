@@ -27,7 +27,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link text-white" id="sideStocks">
+            <a href="<c:url value="/main/stocks/allStock" />" class="nav-link text-white" id="sideStocks">
                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
                 Stocks
             </a>
@@ -47,36 +47,38 @@
 
 </div>
 <div style="width : 90.85%;height:1000px; float:left; background-color: rgb(62 65 68);">
-    <div id="box1" style="text-align: center; margin: 30 auto;"> <h2 style="color: #e5e5e5; font-weight: bold;">국내 주식 리스트</h2></div>
+    <div id="box1" style="text-align: center; margin: 30 auto;"> <h2 style="color: #e5e5e5; font-weight: bold;">회원 자유게시판</h2></div>
     <div class="container-md" style="width:90%; height:85%;  margin : 0 auto; background: #515151; ">
         <div id="box2" style="height: 5%;"></div>
         <div style="margin: 0 auto; text-align:center;">
-            <h4 style="color: #e5e5e5; font-weight: bold; margin-bottom: 30px;" id="today"></h4>
+            <select class="form-select" id="sortType" aria-label="Default select example" style="margin-left: 270px; width: 200px; float: right;">
+                <option value="BOARD_NO" selected>게시판 번호 순</option>
+                <option value="readCnt">조회 많은 순</option>
+                <option value="regDt">최신 순</option>
+            </select>
             <button type="button" onclick="searchStockList();" class="btn btn-secondary" style="display: block; margin-left:4px;float: right;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                 </svg>
             </button>
-            <input type="text" id ="keyword" style="display: block; float: right; margin-bottom: 10px; width: 276px;"  class="form-control" maxlength="20">
-            <table  class="table-S1 cell-border hover" style="width:100%; margin: 0; text-align: center; ">
+            <input type="text" id ="keyword" style="display: block; float: right; margin-bottom: 100px; width: 276px;" placeholder="게시판 제목을 입력해주세요." class="form-control" maxlength="20">
+            <table  class="table-S1 cell-border hover" style="width:100%; margin-top: 30px; text-align: center; ">
                 <colgroup>
                     <col><!-- No -->
                     <col><!-- 지원사업명 -->
                     <col ><!-- 지원분야 -->
                     <col><!-- 지원기관 -->
                     <col ><!-- 지역 -->
-                    <col ><!-- 신청기간시작일 -->
-                    <col ><!-- 신청기간종료일 -->
                 </colgroup>
                 <thead>
                 <tr>
-                    <th style="color: #e5e5e5;">종목명</th>
-                    <th style="color: #e5e5e5;">시장구분</th>
-                    <th style="color: #e5e5e5;">종가</th>
-                    <th style="color: #e5e5e5;">즐겨찾기</th>
+                    <th style="color: #e5e5e5;">NO</th>
+                    <th style="color: #e5e5e5;">제목</th>
+                    <th style="color: #e5e5e5;">조회 수</th>
+                    <th style="color: #e5e5e5;">날짜</th>
                 </tr>
                 </thead>
-                <tbody id="stockList" style="color: #e5e5e5;">
+                <tbody id="boardList" style="color: #e5e5e5;">
 
                 </tbody>
             </table>
@@ -97,49 +99,47 @@
 
 <script>
     $(document).ready(function(){
-        pagingStockList();
-        $("#headerStocks").addClass("active");
-        $("#sideStocks").addClass("active");
-
+        pagingBoardList();
+        $("#headerBoard").addClass("active");
+        $("#sideUserBoard").addClass("active");
+        $("#sortType").change(function(e){
+            pagingBoardList();
+        });
         $("#keyword").keyup(function(e) {
             if (e.keyCode == 13) {
-                searchStockList();
+                pagingBoardList();
             }
         });
 
     });
 
     var page = 1;
-    function pagingStockList(){
+    function pagingBoardList(){
 
         $.ajax({
-            url: CONTEXT_PATH + "/main/stocks/allStock/pagingStockList",
+            url: CONTEXT_PATH + "/userBoard/list.do",
             method: "GET",
             async: true,
             data :{
-                pageNum : page
+                pageNum : page,
+                boardTitle : $("#keyword").val().trim(),
+                sortName :$("#sortType").val()
             },
             processData: true,
             dataType: "json",
             success: function (result) {
-                var today = result.list[0].basDt;
-                var list = result.list;
+                console.log(result);
+                var list = result.boardList;
                 var paging = result.paging;
 
-                $("#today").empty();
-                var str = today.substring(0,4) + "년 " + today.substring(4,6) + "월 " + today.substring(6,8)+"일 기준";
-                $("#today").append(str);
-
-
-                $("#stockList").empty();
+                $("#boardList").empty();
                 for(var i = 0; i < list.length; i++){
                     var str = '<tr>';
-                    str += '<td>'+'<a href="<c:url value="/main/stocks/detail/"/>'+list[i].srtnCd +'" style="color : pink; text-decoration: none;">' + list[i].itmsNm + '<a>'+'</td>';
-                    str += '<td>'+ list[i].mrktCtg +'</td>';
-                    str += '<td>'+ numberWithCommas(list[i].clpr) +'</td>';
-                    str += '<td>'+'<input type="checkbox" onclick="favorite(this);" value="'+list[i].srtnCd+'"  class="favorite" id="'+list[i].srtnCd+'" >'+'</td>';
-                    $("#stockList").append(str);
-                    if(list[i].usrFavorite){$('#'+list[i].srtnCd).attr('checked',true)};
+                    str += '<td>'+ list[i].boardNo +'</td>';
+                    str += '<td>'+'<a href="<c:url value="/userBoard/read/"/>'+list[i].boardNo +'" style="color : pink; text-decoration: none;">' + list[i].boardTitle + '<a>'+'</td>';
+                    str += '<td>'+ numberWithCommas(list[i].readCnt) +'</td>';
+                    str += '<td>'+ list[i].regDt.substring(0,10) +'</td>';
+                    $("#boardList").append(str);
                 }
 
                 //페이징 변환
@@ -176,87 +176,12 @@
 
     function movePage(i){
         page = i;
-        pagingStockList();
-    }
-
-    function favorite(e){
-
-        var action;
-
-        if($(e).prop('checked')){
-            action = "regist";
-        }else{
-            action = "delete";
-        }
-
-        $.ajax({
-            url: CONTEXT_PATH + "/main/stocks/allStock/" + action,
-            method: "GET",
-            async: true,
-            data :{
-                srtnCd : $(e).val()
-            },
-            processData: true,
-            dataType: "json",
-            success: function (result) {
-                alert(result.message);
-                if(!(result.status == "OK") && (action == "regist") ){
-                    $(e).prop('checked', false);
-                }
-                if(!(result.status == "OK") && (action == "delete") ){
-                    $(e).prop('checked', true);
-                }
-            },
-            error: function (xhr, status, error) {
-            }
-        });
+        pagingBoardList();
     }
 
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-
-
-    function searchStockList(){
-
-        if(!$("#keyword").val().trim()){
-            alert("키워드를 입력하시기 바랍니다.");
-        }
-        $.ajax({
-            url: CONTEXT_PATH + "/main/stocks/allStock/searchStockList",
-            method: "GET",
-            async: true,
-            data :{
-                keyword : $("#keyword").val().trim()
-            },
-            processData: true,
-            dataType: "json",
-            success: function (result) {
-                var today = result[0].basDt;
-                var list = result;
-
-                $("#today").empty();
-                var str = today.substring(0,4) + "년 " + today.substring(4,6) + "월 " + today.substring(6,8)+"일 기준";
-                $("#today").append(str);
-
-                $("#stockList").empty();
-                for(var i = 0; i < list.length; i++){
-                    var str = '<tr>';
-                    str += '<td>'+'<a href="javascript:callFunction( list[i].srtnCd );" style="color : pink; text-decoration: none;">' + list[i].itmsNm + '<a>'+'</td>';
-                    str += '<td>'+ list[i].mrktCtg +'</td>';
-                    str += '<td>'+ numberWithCommas(list[i].clpr) +'</td>';
-                    str += '<td>'+'<input type="checkbox" onclick="favorite(this);" value="'+list[i].srtnCd+'"  class="favorite" id="'+list[i].srtnCd+'" >'+'</td>';
-                    $("#stockList").append(str);
-                    if(list[i].usrFavorite){$('#'+list[i].srtnCd).attr('checked',true)};
-                }
-                $("#paging").empty();
-
-            },
-            error: function (xhr, status, error) {
-            }
-        });
-    }
-
 
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
