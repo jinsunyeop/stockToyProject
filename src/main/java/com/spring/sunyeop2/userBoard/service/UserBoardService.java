@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +81,91 @@ public class UserBoardService {
         return boardDetail;
     }
 
+    public void deleteBoard(long boardNo){
+        boardMapper.deleteBoard(boardNo);
+    }
+
+
+
+    /** 이미지 미리보기 로직
+     * @param filePath
+     * @param response
+     * @throws Exception
+     */
+    public void getImage(String filePath, HttpServletResponse response) throws Exception{
+
+        File file = new File(filePath);
+        if(!file.isFile()){
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.write("<script type='text/javascript'>alert('조회된 정보가 없습니다.'); self.close();</script>");
+            out.flush();
+            return;
+        }
+
+        FileInputStream fis = null;
+        new FileInputStream(file);
+
+        BufferedInputStream in = null;
+        ByteArrayOutputStream bStream = null;
+        try {
+            fis = new FileInputStream(file);
+            in = new BufferedInputStream(fis);
+            bStream = new ByteArrayOutputStream();
+            int imgByte;
+            while ((imgByte = in.read()) != -1) {
+                bStream.write(imgByte);
+            }
+
+            String type = "";
+
+            String ext = filePath.substring(filePath.lastIndexOf(".") + 1);
+
+            if (ext != null && !"".equals(ext)) {
+                if ("jpg".equals(ext.toLowerCase())) {
+                    type = "image/jpeg";
+                } else {
+                    type = "image/" + ext.toLowerCase();
+                }
+
+            } else {
+                log.debug("Image fileType is null.");
+            }
+
+            response.setHeader("Content-Type", type);
+            response.setContentLength(bStream.size());
+
+            bStream.writeTo(response.getOutputStream());
+
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+
+        } catch (Exception e) {
+            log.debug("{}", e);
+        } finally {
+            if (bStream != null) {
+                try {
+                    bStream.close();
+                } catch (Exception est) {
+                    log.debug("IGNORED: {}", est.getMessage());
+                }
+            }
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception ei) {
+                    log.debug("IGNORED: {}", ei.getMessage());
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (Exception efis) {
+                    log.debug("IGNORED: {}", efis.getMessage());
+                }
+            }
+        }
+    }
     
     
 }

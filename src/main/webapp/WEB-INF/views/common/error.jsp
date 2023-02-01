@@ -23,7 +23,8 @@
                 <img src="<c:url value="/assets/img/error.png"/>"  style="border-radius: 100px; display: block;margin: 0 auto;padding-top: 50px;width: 300px;height: 350px;" >
 
             </form>
-        <button style="width: 300px; margin: 0 auto; height: 50px;" onclick="history.back();">뒤로가기</button>
+        <button style="width: 300px; margin: 0 auto; height: 50px;" onclick="history.back();">뒤로 가기</button>
+        <button style="width: 300px; margin: 0 auto; height: 50px;" onclick="location.href='<c:url value="/login"/>';">로그인하러 가기</button>
 
     </div>
 </div>

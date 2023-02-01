@@ -22,5 +22,6 @@ public interface UserBoardMapper {
 
     public void updateReadCnt(long boardNo);
 
+    public void deleteBoard(long boardNo);
 
 }

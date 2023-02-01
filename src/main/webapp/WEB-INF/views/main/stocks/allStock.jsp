@@ -15,7 +15,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
-            <a href="<c:url value="/main/dashboard" />" class="nav-link text-white" id="sideDashBoard">
+            <a href=" <c:url value="/main/dashboard" />" class="nav-link text-white" id="sideDashBoard">
                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
                 Dashboard
             </a>

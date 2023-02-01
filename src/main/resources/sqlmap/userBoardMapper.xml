@@ -92,5 +92,9 @@
         UPDATE USER_BOARD SET `READ_CNT`= `READ_CNT` + 1 WHERE  `BOARD_NO` = #{boardNo};
 </update>
 
+<delete id="deleteBoard" parameterType="long">
+        DELETE FROM USER_BOARD WHERE BOARD_NO = #{boardNo};
+</delete>
+
 
 </mapper>

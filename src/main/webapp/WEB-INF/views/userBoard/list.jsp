@@ -85,9 +85,9 @@
             <br><br><br>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center" id="paging">
-
                 </ul>
             </nav>
+            <button type="button" onclick="locationWriteBoard();" class="btn btn-secondary" style="display: block; margin-top:200px;float: right;">작성하러 가기</button>
 
         </div>
     </div>
@@ -112,6 +112,10 @@
         });
 
     });
+
+    function locationWriteBoard(){
+        location.href = '<c:url value="/userBoard/write"/>';
+    }
 
     var page = 1;
     function pagingBoardList(){

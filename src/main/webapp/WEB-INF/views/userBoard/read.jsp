@@ -81,7 +81,7 @@
     <div id="reqButton"  style="margin: 0 auto; text-align:center;" class="mt-4">
         <c:if test="${board.usrId eq user.usrId}">
             <button type="button" class="btn btn-primary" onclick="enableInput();" >수정</button>
-            <button type="button" class="btn btn-danger" onclick="findPwd();" >삭제</button>
+            <button type="button" class="btn btn-danger" onclick="deleteBoard();" >삭제</button>
         </c:if>
         <button type="button" class="btn btn-success" onclick="moveBoardList();" style="">목록</button>
     </div>
@@ -194,6 +194,32 @@
         $('#content').summernote('enable');
         $("#reqButton").empty();
         $("#reqButton").append('<button type="button" class="btn btn-primary" onclick="updateBoard();" >수정</button> <button type="button" class="btn btn-danger" onclick="location.reload();" >취소</button>');
+    }
+
+    function deleteBoard(){
+
+        var boardNo = "${board.boardNo}";
+
+        if(!confirm("삭제하시겠습니까?")){
+            return false;
+        }
+
+        $.ajax ({
+            url	: CONTEXT_PATH + "/userBoard/delete",
+            method	: "POST",
+            data : {
+                boardNo : boardNo
+            },
+            async : true,
+            processData : true,
+            dataType    : "json",
+            success : function(result) {
+                alert(result.message);
+                moveBoardList();
+            },
+            error	: function(xhr, status, error) {
+            }
+        });
     }
 
 

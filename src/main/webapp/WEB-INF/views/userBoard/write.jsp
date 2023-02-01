@@ -10,7 +10,16 @@
         $(function (){
             $(".board-form").find("[name=content]").summernote({
                 height : 500,
-                minHeight : 300
+                minHeight : 300,
+                callbacks: {
+                    onImageUpload : function(files, editor, welEditable){
+
+                        // 파일 업로드(다중업로드를 위해 반복문 사용)
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            uploadSummernoteImageFile(files[i],this);
+                        }
+                    }
+                }
             });
         })
     </script>
@@ -41,6 +50,12 @@
                 Stocks
             </a>
         </li>
+        <li>
+            <a href="<c:url value="/userBoard/list" />" class="nav-link text-white" id="sideUserBoard">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
+                UserBoard
+            </a>
+        </li>
     </ul>
     <hr>
     <div class="">
@@ -52,7 +67,6 @@
 
 <div style="width : 90.85%;height:1000px; padding: 50px; float:left; background-color: rgb(62 65 68);">
     <h1 style="text-align: center;" class="text-white">회원 게시판</h1>
-
 
     <h5 class="text-white">작성자</h5>
     <input type="text" class="form-control mb-3" id="writer" value="${user.username}" readonly>
@@ -69,18 +83,24 @@
 
     <div id="reqButton"  style="margin: 0 auto; text-align:center;" class="mt-4">
         <button type="button" class="btn btn-primary" onclick="writeBoard();" >저장</button>
-        <button type="button" class="btn btn-success" onclick="findPwd();" style="">목록</button>
+        <button type="button" class="btn btn-success" onclick="moveBoardList();" style="">목록</button>
     </div>
 </div>
 
 <script>
     $(document).ready(function(){
 
-        $("#headerStocks").addClass("active");
-        $("#sideStocks").addClass("active");
+        $("#headerBoard").addClass("active");
+        $("#sideUserBoard").addClass("active");
 
     });
 
+
+    function moveBoardList(){
+        location.href = CONTEXT_PATH + "/userBoard/list";
+    }
+
+    var fileArray = [];
     function writeBoard(){
 
         var $title =  $("#title");
@@ -103,17 +123,28 @@
             $content.focus();
             return false ;
         }
+        var formData = new FormData();
+        for(var i = 0; i<fileArray.length; i++){
+            var str = fileArray[i];
+            // str의 값 : common/getImg.do?savedFileName=bc395afe-2324-438d-ae68-1a0a75d0a431.png
+            // '='를 기준으로 자른다.
+            var result = str.toString().split('=');
+            formData.append('file[]',result[1]);
+            // result[1] : bc395afe-2324-438d-ae68-1a0a75d0a431.png
+        }
+
+        formData.append('boardTitle',$title.val().trim());
+        formData.append('boardContent',$content.val().trim());
+        formData.append('usrId',$usrId);
+        console.log(formData);
 
         $.ajax ({
             url	: CONTEXT_PATH + "/userBoard/write",
             method	: "POST",
-            data : {
-                boardTitle : $title.val().trim(),
-                boardContent : $content.val().trim(),
-                usrId : $usrId
-            },
-            async : true,
-            processData : true,
+            data : formData,
+            enctype: 'multipart/form-data',
+            processData : false,
+            contentType : false,
             dataType    : "json",
             success : function(result) {
                 alert(result.message);
@@ -127,6 +158,29 @@
             }
         });
     }
+
+    function uploadSummernoteImageFile(file, el) {
+        var data = new FormData();
+        data.append("file",file);
+        $.ajax({
+            url: CONTEXT_PATH + '/userBoard/image.do',
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: data,
+            cache: false,
+            contentType : false,
+            processData : false,
+            success : function(result) {
+                $(el).summernote('editor.insertImage',result.data);
+                fileArray.push(result.data);
+            },
+            error : function(e) {
+                console.log(e);
+            }
+        });
+    }
+
+
 
 
 
