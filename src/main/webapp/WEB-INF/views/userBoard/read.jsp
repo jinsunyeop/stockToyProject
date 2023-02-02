@@ -10,7 +10,16 @@
         $(function (){
             $(".board-form").find("[name=content]").summernote({
                 height : 500,
-                minHeight : 300
+                minHeight : 300,
+                callbacks: {
+                    onImageUpload : function(files, editor, welEditable){
+
+                        // 파일 업로드(다중업로드를 위해 반복문 사용)
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            uploadSummernoteImageFile(files[i],this);
+                        }
+                    }
+                }
             });
         })
 
@@ -142,6 +151,8 @@
         });
     }
 
+    var fileArray = [];
+
     function updateBoard(){
 
         var $title =  $("#title");
@@ -165,16 +176,27 @@
             return false ;
         }
 
+        var formData = new FormData();
+        for(var i = 0; i<fileArray.length; i++){
+            var str = fileArray[i];
+            // str의 값 : common/getImg.do?savedFileName=bc395afe-2324-438d-ae68-1a0a75d0a431.png
+            // '='를 기준으로 자른다.
+            var result = str.toString().split('=');
+            formData.append('file[]',result[1]);
+            // result[1] : bc395afe-2324-438d-ae68-1a0a75d0a431.png
+        }
+
+        formData.append('boardTitle',$title.val().trim());
+        formData.append('boardContent',$content.val().trim());
+        formData.append('boardNo',boardNo);
+
         $.ajax ({
             url	: CONTEXT_PATH + "/userBoard/update",
             method	: "POST",
-            data : {
-                boardTitle : $title.val().trim(),
-                boardContent : $content.val().trim(),
-                boardNo : boardNo
-            },
-            async : true,
-            processData : true,
+            data : formData,
+            enctype: 'multipart/form-data',
+            processData : false,
+            contentType : false,
             dataType    : "json",
             success : function(result) {
                 alert(result.message);
@@ -218,6 +240,27 @@
                 moveBoardList();
             },
             error	: function(xhr, status, error) {
+            }
+        });
+    }
+
+    function uploadSummernoteImageFile(file, el) {
+        var data = new FormData();
+        data.append("file",file);
+        $.ajax({
+            url: CONTEXT_PATH + '/userBoard/image.do',
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: data,
+            cache: false,
+            contentType : false,
+            processData : false,
+            success : function(result) {
+                $(el).summernote('editor.insertImage',result.data);
+                fileArray.push(result.data);
+            },
+            error : function(e) {
+                console.log(e);
             }
         });
     }

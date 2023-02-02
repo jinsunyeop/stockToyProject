@@ -35,6 +35,8 @@ public class UserBoardController {
 
     String middlePath = "/assets/summerNoteDir/";
 
+    String middleCopyPath = "/assets/summerNoteCopyDir/";
+
 
     /**
      * @param req
@@ -74,8 +76,11 @@ public class UserBoardController {
      * @return 게시판 수정
      */
     @RequestMapping(value = "/userBoard/update",method = RequestMethod.POST)
-    public ResponseEntity<Message> updateUserBoard(HttpServletRequest req, Board board, Authentication auth){
+    public ResponseEntity<Message> updateUserBoard(HttpServletRequest req, @RequestParam(value="file[]")List<String> fileList, Board board, Authentication auth) throws Exception {
         log.info("게시판 수정 게시판 객체 =======> {}",board.toString());
+
+        summerCopy(fileList);
+        board.setBoardContent(board.getBoardContent().replaceAll("getImg","getImgCopy"));
 
         Message msg = new Message();
 
@@ -139,12 +144,15 @@ public class UserBoardController {
      * @return 게시판 작성
      */
     @RequestMapping(value = "/userBoard/write",method = RequestMethod.POST)
-    public ResponseEntity<Message> writeUserBoard(HttpServletRequest req,@RequestParam(value="file[]")List<String> fileList, Board board, Authentication auth){
+    public ResponseEntity<Message> writeUserBoard(HttpServletRequest req,@RequestParam(value="file[]")List<String> fileList, Board board, Authentication auth) throws Exception {
         log.info("게시판 작성 게시판 객체 =======> {}",board.toString());
 
         fileList.forEach( k ->{
             log.info("게시판 파일 리스트 =========>{}",k);
         });
+
+        summerCopy(fileList);
+        board.setBoardContent(board.getBoardContent().replaceAll("getImg","getImgCopy"));
 
         long boardNo = boardService.writeBoard(board);
         Message msg = new Message();
@@ -199,6 +207,14 @@ public class UserBoardController {
         boardService.getImage(filePath,resp);
     }
 
+    @RequestMapping(value="/userBoard/getImgCopy.do" , method=RequestMethod.GET)
+    public void getImgCopy(@RequestParam(value="savedFileName") String savedFileName, HttpServletResponse resp) throws Exception{
+        String copyFilePath = rootPath + middleCopyPath + savedFileName;
+
+        log.info("filePath =======>{}",copyFilePath);
+        boardService.getImage(copyFilePath,resp);
+    }
+
 
     /**
      * @param req
@@ -219,5 +235,43 @@ public class UserBoardController {
     }
 
 
+    /**
+     * 이미지 미리보기 폴더에 파일을 삭제하고 copy 디렉토리에 실제 업로드된 사진만을 저장하는 로직 (현재 파일 삭제가 안됌)
+     * @param fileList
+     * @throws Exception
+     */
+    public void summerCopy(List<String> fileList) throws Exception {
+
+        for(int i=0;i<fileList.size();i++){
+            String oriFilePath = rootPath+middlePath+fileList.get(i);
+            log.info("oriFilePath: {}", oriFilePath);
+
+            //복사될 파일경로
+            String copyFilePath = rootPath+middleCopyPath+fileList.get(i);
+            log.info("copyFilePath: {}", copyFilePath);
+
+            try {
+                FileInputStream fis = new FileInputStream(oriFilePath); //읽을파일
+                FileOutputStream fos = new FileOutputStream(copyFilePath); //복사할파일
+                int data = 0;
+                while((data=fis.read())!=-1) {
+                    fos.write(data);
+                }
+                fis.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                File file = new File(oriFilePath);
+                log.info(file.getPath() +" 파일 삭제 : " +file.delete());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+    }
 
 }

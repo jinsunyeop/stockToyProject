@@ -136,7 +136,6 @@
         formData.append('boardTitle',$title.val().trim());
         formData.append('boardContent',$content.val().trim());
         formData.append('usrId',$usrId);
-        console.log(formData);
 
         $.ajax ({
             url	: CONTEXT_PATH + "/userBoard/write",
