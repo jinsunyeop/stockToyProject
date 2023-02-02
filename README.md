@@ -12,7 +12,8 @@
 - WebSocket을 통한 양방향 통신
 - Jsoup을 이용한 웹 스크래핑
 - MailSender를 통한 이메일 전송
--  페이징 및 CRUD, 파일 업로드  
+- SummerNote를 이용한 회원 게시판
+-  페이징 및 CRUD, 다중 파일 업로드  
 
 #### * 기간
 2023/01/01 ~ 
@@ -27,6 +28,7 @@
  6.  Scraping : Jsoup
  7. Template Engine & Front : JSP, JQuery, JS, HTML, CSS, BootStrap
  8.  Bulid : Maven 
+ 9.  WYSIWYG : SummerNote
 
 ## 🔍  Meaning
 
