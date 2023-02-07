@@ -237,7 +237,6 @@
 
         function  drawResultStock(stock){
             var stockArr = stock.split(",");
-            console.log(stockArr);
             $("#searchList").html('');
             $("#itmsNm").val(stockArr[0]).attr("readonly", true);
             $("#srtnCd").val(stockArr[1]);
@@ -427,8 +426,6 @@
             info.push("-"); //하루 최저가
             stockArr.push(info);
         </c:forEach>
-
-        console.log(stockArr);
 
         stockArr.reverse();
 

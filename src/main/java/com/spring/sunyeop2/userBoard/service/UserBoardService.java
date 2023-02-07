@@ -6,11 +6,13 @@ import com.spring.sunyeop2.userBoard.info.Board;
 import com.spring.sunyeop2.userBoard.mapper.UserBoardMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,11 @@ public class UserBoardService {
 
     @Autowired
     UserBoardMapper boardMapper;
+
+    @Value("${sunyeop2.profile.rootPath}")
+    String rootPath;
+
+    String middleCopyPath = "/assets/summerNoteCopyDir/";
 
     /**
      * @param param 
@@ -82,6 +89,26 @@ public class UserBoardService {
     }
 
     public void deleteBoard(long boardNo){
+        Board boardDetail = boardMapper.readBoard(boardNo);
+        String boardContent = boardDetail.getBoardContent();
+        List<String> fileNameList = new ArrayList<>();
+        String separatorStr = "savedFileName=";
+        while (boardContent.indexOf(separatorStr) > -1){
+            int startIdx = boardContent.indexOf(separatorStr) + separatorStr.length();
+            int endIdx = boardContent.indexOf("style") -2 ;
+
+            fileNameList.add(boardContent.substring(startIdx,endIdx));
+            log.info("fileName ===========> {}",boardContent.substring(startIdx,endIdx));
+
+            boardContent = boardContent.substring(endIdx+7);
+            log.info("split boardContent =======> {}",boardContent);
+        }
+
+        for(String fileName : fileNameList){
+            File file = new File(rootPath + middleCopyPath + fileName);
+            log.info("파일 삭제 =======> {}", file.delete());
+        }
+
         boardMapper.deleteBoard(boardNo);
     }
 

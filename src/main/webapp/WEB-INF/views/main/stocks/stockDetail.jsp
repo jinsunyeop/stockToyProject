@@ -284,7 +284,7 @@
         <div id="rateChart"  style="width: 100%; height: 20%; margin-left: 35px;">
         </div>
         <div class="col-md-8 col-xl-6 chat">
-            <div class="card" id="chatCard">
+            <div class="card" id="chatCard" style="width: 701.818182px;">
                 <div class="card-header msg_head">
                     <div class="d-flex bd-highlight">
                         <div class="img_cont">
@@ -330,7 +330,6 @@
         socket = ws;
 
         ws.onopen = function (){
-            console.log("웹소켓 연결");
             socket.send( sendUsrAs +"님이 입장하였습니다.");
         };
 
@@ -342,13 +341,11 @@
                 var info = msg.split(infoMsgSeparator);
                 $("#chatBox").append('<span style="display: block; color: white;">'+ info[1] +'</span>');
             }else{
-                var msgArr = msg.split(commonMsgSeparator);0
-                console.log(msgArr);
+                var msgArr = msg.split(commonMsgSeparator);
                 var sendUsrId = msgArr[0];
                 var sendUsrAs = msgArr[1];
                 var sendUsrImgPath = msgArr[2];
                 var sendMsg = msgArr[3];
-                console.log(sendUsrImgPath);
                 if(sendUsrId != usrId){
                     $("#chatBox").append('<span style="color: white; display: block; float: left;">' + sendUsrAs + '</span><br>'
                         +'<div class="d-flex justify-content-start mb-4">'
@@ -374,7 +371,8 @@
             console.log("웹소켓 연결 해제");
        };
         ws.onerror = function(event){console.log("Info: Connection error");
-            setTimeout(function(){connect();} , 2000);
+            setTimeout(function(){connect();} ,
+                2000);
         };
     }
 
@@ -396,6 +394,7 @@
             evt.preventDefault();
             if(socket.readyState !== 1) return;
             let msg = $("#inputMsg").val();
+            if(msg) return;
             socket.send(msg+"==&==");
             $("#inputMsg").val("");
         });

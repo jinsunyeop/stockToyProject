@@ -28,6 +28,8 @@
                 <div class="checkbox mb-3">
                 </div>
                 <a class="w-100 btn btn-lg btn-secondary" onclick="login();">Sign up</a>
+                <a class="w-100 btn btn-lg btn-primary" href="/oauth2/authorization/google">Google Login</a>
+
                 <hr class="my-4">
                 <div>
                     <a href="#" onclick="" style="color:black;" data-bs-toggle="modal" data-bs-target="#findIdPwdModal">아이디/비밀번호 찾기</a>

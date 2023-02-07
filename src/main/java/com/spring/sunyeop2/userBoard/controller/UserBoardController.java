@@ -103,7 +103,7 @@ public class UserBoardController {
      */
     @RequestMapping(value = "/userBoard/delete",method = RequestMethod.POST)
     public ResponseEntity<Message> deleteUserBoard(HttpServletRequest req, Authentication auth){
-        String strBoardNo =req.getParameter("boardNo");
+        String strBoardNo = req.getParameter("boardNo");
         log.info("게시판 삭제 게시판 번호 =======> {}",strBoardNo);
         long boardNo = Long.valueOf(strBoardNo);
 
@@ -187,7 +187,7 @@ public class UserBoardController {
             // 파일 저장
 
             multipartFile.transferTo(targetFile);
-            // 파일을 열기위하여 common/getImg.do 호출 / 파라미터로 savedFileName 보냄.
+            // 파일을 열기위하여 userBoard/getImg.do 호출 / 파라미터로 savedFileName 보냄.
             msg.setData("/userBoard/getImg.do?savedFileName="+savedFileName);
             msg.setStatus(HttpStatus.OK);
         } catch (IOException e) {
@@ -241,6 +241,7 @@ public class UserBoardController {
      * @throws Exception
      */
     public void summerCopy(List<String> fileList) throws Exception {
+        File parentFile = new File(rootPath+middlePath);
 
         for(int i=0;i<fileList.size();i++){
             String oriFilePath = rootPath+middlePath+fileList.get(i);
@@ -264,8 +265,8 @@ public class UserBoardController {
             }
 
             try {
-                File file = new File(oriFilePath);
-                log.info(file.getPath() +" 파일 삭제 : " +file.delete());
+                File childFile = new File(parentFile,fileList.get(i));
+                log.info(childFile.toString() +"====> 파일 삭제 : " + childFile.delete());
             }catch (Exception e){
                 e.printStackTrace();
             }
