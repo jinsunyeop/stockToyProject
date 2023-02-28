@@ -6,12 +6,13 @@
 
 #### * 주요 기술
  - Spring Security를 이용한 보안성
+ - OAuth-client를 이용한 구글 로그인
  -  okHttp3를 이용한 API 요청
  -  JQuery Datatables를 이용한 테이블 시각화
  - Apache Echart를 이용한 차트 시각화
 - WebSocket을 통한 양방향 통신
 - Jsoup을 이용한 웹 스크래핑
-- MailSender를 통한 이메일 전송
+- JavaMailSender 통한 이메일 전송
 - SummerNote를 이용한 회원 게시판
 -  페이징 및 CRUD, 다중 파일 업로드  
 
