@@ -38,7 +38,25 @@
 
 ## 🖨 Contents
 
-**1. DashBoard (메인 화면)**
+**ERD**
+![erd](https://user-images.githubusercontent.com/85484391/221765245-5c353afe-ca6b-4d7b-bde5-3e6252e81a87.JPG)
+
+**1. Login (로그인 화면)**
+
+![login](https://user-images.githubusercontent.com/85484391/221765254-ca25e92f-0a5a-4b82-96c0-0a5c6d267db5.JPG)
+* 주요 기능
+	1. Spring Security를 이용한 로그인 인증 / 회원가입
+	2. OAuth-Client를 이용한 GOOGLE 로그인 / 강제 회원가입
+
+**2. Find ID / PWD (로그인 화면 팝업)**
+
+![findIdPwd](https://user-images.githubusercontent.com/85484391/221765266-d0fc450b-c6b9-4698-a236-e3555614795f.JPG)
+* 주요 기능
+	1. 아이디 찾기
+	2. JavaMailSender를 통해 새 발급받은 비밀번호 이메일 전송
+
+
+**3. DashBoard (메인 화면)**
 
 ![DashBoard](https://user-images.githubusercontent.com/85484391/214487770-c2141877-54fc-4785-a99c-97464da1624c.JPG)
 * 주요 기능
@@ -46,7 +64,7 @@
 	2.  보유 주식 중 가장 낮은 등락률 주식 차트 조회
 	3.  공공 데이터 기준 최신 일자 나의 총 자산 계산
 
-**2. MyStockList (사용자 별 주식 화면)**	
+**4. MyStockList (사용자 별 주식 화면)**	
 
 ![MystockList](https://user-images.githubusercontent.com/85484391/214487787-7247ea19-a67f-43f6-9311-f20c0e8658bd.JPG)
 ![StockAdd](https://user-images.githubusercontent.com/85484391/214487788-68ef7af8-2780-4396-a6dd-df8fe0f2e881.JPG)
@@ -56,7 +74,7 @@
 	2.  보유 주식 종목 별 최신 뉴스 1개씩 조회하는 리스트 (Naver News Scraping)
 	3.  보유 주식 추가 및 수정, 삭제
 
-**3. StockAllList (국내 주식 리스트 화면)** 
+**5. StockAllList (국내 주식 리스트 화면)** 
 
 ![Allstock](https://user-images.githubusercontent.com/85484391/214487773-fca760c5-2758-419d-9d62-966631aec79f.JPG)
 
@@ -65,7 +83,7 @@
 	2.  즐겨찾기 설정, 삭제
 	3.  onClick시 StockDetail 페이지 이동
 
-**4. StockDetail (국내 주식 종목 당 상세 화면)**
+**6. StockDetail (국내 주식 종목 당 상세 화면)**
 
 ![StockDetail](https://user-images.githubusercontent.com/85484391/214487782-0e191800-ed2b-4754-b3c2-89b581097908.JPG)
 
@@ -74,7 +92,7 @@
 	2.  종목 별 웹 사이트 사용자 주식 보유 비율 조회
 	3.  종목 별 대화 창 (websocket) 구현 
 
-**5. MyInfo(사용자 정보 화면)**
+**7. MyInfo(사용자 정보 화면)**
 
 ![Info](https://user-images.githubusercontent.com/85484391/214487776-85738fa9-69df-4246-924a-38287ac00852.JPG)
 
@@ -84,6 +102,3 @@
 
 ## 🛠 현 시점 추가 및 수정사항
 
- - 탈퇴하기 구현 예정
- - 비밀번호 5회 틀릴 경우 정지 구현 예정
- - api 명세서 작성 
