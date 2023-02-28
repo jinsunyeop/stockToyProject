@@ -13,18 +13,32 @@ package com.spring.sunyeop2.core.config.handler.auth;
 import com.spring.sunyeop2.login.info.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
+    private Map<String,Object> attributes;
 
+    //일반 로그인
     public PrincipalDetails (User user){
         this.user = user;
+    }
+
+    //OAuth 로그인
+    public PrincipalDetails (User user,Map<String,Object> attributes){
+        this.user = user; this.attributes = attributes;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     // 해당 유저의 권한을 return하는 메소드
@@ -92,5 +106,10 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

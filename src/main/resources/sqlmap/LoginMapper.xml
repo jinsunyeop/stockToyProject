@@ -46,22 +46,30 @@
         SELECT LGN_ID FROM USER WHERE EML_ADDR = #{emlAddr};
     </select>
 
-    <select id="findLgnPwd" resultType="String" parameterType="User">
-        SELECT LGN_PWD FROM USER WHERE LGN_ID = #{lgnId} AND EML_ADDR = #{emlAddr};
+    <select id="findUserWithIdAndAddr" resultType="Integer" parameterType="User">
+        SELECT COUNT(*) FROM USER WHERE LGN_ID = #{lgnId} AND EML_ADDR = #{emlAddr};
     </select>
+
+    <update id="changePwd" parameterType="User">
+        UPDATE USER SET LGN_PWD = #{newPwd} WHERE LGN_ID = #{lgnId} AND EML_ADDR = #{emlAddr};
+    </update>
 
     <insert id="joinUsr" parameterType="User">
         INSERT INTO USER (
                           `LGN_ID`,
                           `LGN_PWD`,
                           `USR_NM`,
-                          `EML_ADDR`
+                          `EML_ADDR`,
+                          `PROVIDE`,
+                          `PROVIDER_ID`
                           )
         VALUES (
                 #{lgnId},
                 #{lgnPwd},
                 #{usrNm},
-                #{emlAddr}
+                #{emlAddr},
+                #{provide},
+                #{providerId}
                 );
     </insert>
 

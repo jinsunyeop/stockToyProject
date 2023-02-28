@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import java.util.Random;
 
 //ResponseEntity
 //    1. Spring에서 제공하는 클래스 중 HttpEntity라는 클래스가 존재하는데 이것은 HttpHeader와 HttpBody를 포함하는 클래스이다. 이를 상속받아 구현한 클래스이다.
@@ -38,9 +39,6 @@ public class LoginController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JavaMailSender mailSender;
 
     @RequestMapping("/login")
     public String login(HttpServletRequest req){
@@ -66,17 +64,8 @@ public class LoginController {
     @GetMapping("/findPwd")
     @ResponseBody
     public String findPwd(HttpServletRequest req,User user){
+
         String msg = loginService.findPwd(user);
-        if(!msg.isEmpty()){
-            SimpleMailMessage mailMsg = new SimpleMailMessage();
-            mailMsg.setTo(user.getEmlAddr());
-            mailMsg.setSubject("StockProject 비밀번호 확인");
-            mailMsg.setText("당신의 비밀번호는 '" + msg +"' 입니다.");
-            mailSender.send(mailMsg);
-            msg = "귀하의 이메일 주소로 비밀번호를 전송하였습니다.";
-        }else{
-            msg = "존재하지 않는 아이디와 이메일입니다.";
-        }
         log.info("비밀번호 찾기 메시지 : " +msg);
         return msg;
     }
